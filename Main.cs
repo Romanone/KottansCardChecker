@@ -53,26 +53,40 @@ namespace Bank
 
         }
 
-        private void ValidationCheck(TextBox tb)
+        private bool ValidationCheck(TextBox tb)
         {
-            lblVendor.Text = BankOperation.GetCreditCardVendor(tb.Text);
-
             if (BankOperation.IsCreditCardNumberValid(tb.Text))
             {
-                lblValid.Text = "Номер валідний";
-                ChosePicture();
-
-                object check = Properties.Resources.ResourceManager.GetObject("true");
-                pbCheck.Image = (Image)check;
+                lblVendor.Text = BankOperation.GetCreditCardVendor(tb.Text);
+                if(lblVendor.Text != "Unknown")
+                {
+                    lblValid.Text = "Номер валідний";
+                    object check = Properties.Resources.ResourceManager.GetObject("true");
+                    pbCheck.Image = (Image)check;
+                    ChosePicture();
+                    return true;
+                }
+                else
+                {
+                    lblValid.Text = "Номер не валідний";
+                    object check = Properties.Resources.ResourceManager.GetObject("false");
+                    pbCheck.Image = (Image)check;
+                    ChosePicture();
+                    return false;
+                }
             }
 
             else
             {
+                lblVendor.Text = "Unknown";
                 lblValid.Text = "Номер не валідний";
-                ChosePicture();
+
+                object logo = Properties.Resources.ResourceManager.GetObject("kottans");
+                pbVendor.Image = (Image)logo;
 
                 object check = Properties.Resources.ResourceManager.GetObject("false");
                 pbCheck.Image = (Image)check;
+                return false;
             }
         }
 
@@ -118,7 +132,7 @@ namespace Bank
 
         private void btnAbout_Click(object sender, EventArgs e)
         {
-            MessageBox.Show("28.04.2016\nRoman Kovalchuk\nroman@kovalchuk.eu", "Тестове завдання для kottans.org");
+            MessageBox.Show("V1.1\n08.05.2016\nRoman Kovalchuk\nroman@kovalchuk.eu", "Тестове завдання для kottans.org");
         }
 
         private void btnGenerator_Click(object sender, EventArgs e)
@@ -128,8 +142,15 @@ namespace Bank
                 if (String.IsNullOrEmpty(tbInput.Text))
                     return;
 
-                tbGenerator.Text = BankOperation.GenerateNextCreditCardNumber(tbInput.Text);
-                ValidationCheck(tbGenerator);
+                if (ValidationCheck(tbInput))
+                {
+                    tbGenerator.Text = BankOperation.GenerateNextCreditCardNumber(tbInput.Text);
+                }
+                else
+                {
+                    MessageBox.Show("Новий номер можна згенерувати тільки на основі існуючого валідного.");
+                }
+
             }
             catch (Exception ex)
             {

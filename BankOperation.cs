@@ -10,29 +10,30 @@ namespace Bank
 
         public static string GetCreditCardVendor(string cardNumber)
         {
-            int code = Convert.ToInt32(cardNumber.Substring(0, 4));
+            string number = cardNumber.Replace(" ", string.Empty);
+            int code = Convert.ToInt32(number.Substring(0, 4));
 
-            if((code >= 3400 && code <= 3499) || (code >= 3700 && code <= 3799))
+            if (((code >= 3400 && code <= 3499) || (code >= 3700 && code <= 3799)) && number.Length == 15)
             {
                 return vendor[0];
             }
 
-            else if (code >= 3528 && code <= 3589)
+            else if ((code >= 3528 && code <= 3589) && number.Length == 16)
             {
                 return vendor[1];
             }
 
-            else if ((code >= 5000 && code <= 5099) || (code >= 5600 && code <= 5699) || (code >= 6900 && code <= 6999))
+            else if (((code >= 5000 && code <= 5099) || (code >= 5600 && code <= 5699) || (code >= 6900 && code <= 6999)) && (number.Length >=12 && number.Length <=19))
             {
                 return vendor[2];
             }
 
-            else if ((code >= 2221 && code <= 2720) || (code >= 5100 && code <= 5599))
+            else if (((code >= 2221 && code <= 2720) || (code >= 5100 && code <= 5599)) && number.Length == 16)
             {
                 return vendor[3];
             }
 
-            else if ((code >= 4000 && code <= 4999))
+            else if (((code >= 4000 && code <= 4999)) && (number.Length == 13 || number.Length == 16 || number.Length == 19))
             {
                 return vendor[4];
             }
