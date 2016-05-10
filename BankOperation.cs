@@ -5,13 +5,15 @@ namespace Bank
 {
     static class BankOperation
     {
-        private static List<string> vendor = new List<string> { "American Express", "JCB", "Maestro", "MasterCard", "VISA"};
-        private static int tempControlNumber = 0;
+        private static List<string> vendor = new List<string> { "American Express", "JCB", "Maestro", "MasterCard", "VISA" };
 
         public static string GetCreditCardVendor(string cardNumber)
         {
             string number = cardNumber.Replace(" ", string.Empty);
             int code = Convert.ToInt32(number.Substring(0, 4));
+
+            if (LuhnAlgorithmChecker(cardNumber) == false)
+                return "Unknown";
 
             if (((code >= 3400 && code <= 3499) || (code >= 3700 && code <= 3799)) && number.Length == 15)
             {
@@ -23,7 +25,7 @@ namespace Bank
                 return vendor[1];
             }
 
-            else if (((code >= 5000 && code <= 5099) || (code >= 5600 && code <= 5699) || (code >= 6900 && code <= 6999)) && (number.Length >=12 && number.Length <=19))
+            else if (((code >= 5000 && code <= 5099) || (code >= 5600 && code <= 5699) || (code >= 6900 && code <= 6999)) && (number.Length >= 12 && number.Length <= 19))
             {
                 return vendor[2];
             }
@@ -43,6 +45,41 @@ namespace Bank
 
         public static bool IsCreditCardNumberValid(string cardNumber)
         {
+            if (GetCreditCardVendor(cardNumber) != "Unknown")
+                return true;
+            return false;
+        }
+
+        public static string GenerateNextCreditCardNumber(string cardNumber)
+        {
+            int controler = 20;
+            string strCode = cardNumber.Replace(" ", string.Empty);
+            string tempVendor = null;
+
+            if (GetCreditCardVendor(strCode) != "Unknown")
+                tempVendor = GetCreditCardVendor(strCode);
+
+            else
+                return null;
+
+            ulong code = Convert.ToUInt64(strCode) + 1;
+
+            while (IsCreditCardNumberValid(code.ToString()) == false)
+            {
+                code++;
+                controler--;
+                if (controler == 0)
+                    return String.Format("no more numbers left for {0}", tempVendor);
+            }
+
+            if(GetCreditCardVendor(code.ToString()) != tempVendor)
+                return String.Format("no more numbers left for {0}", tempVendor);
+
+            return code.ToString();
+        }
+
+        public static bool LuhnAlgorithmChecker(string cardNumber)
+        {
             string code = cardNumber.Replace(" ", string.Empty);
             List<int> oddNumbers = new List<int>();
             List<int> pairNumbers = new List<int>();
@@ -52,7 +89,7 @@ namespace Bank
             if (code.Length % 2 == 0)
             {
 
-                for (int i = 0; i < code.Length; i += 2 )
+                for (int i = 0; i < code.Length; i += 2)
                 {
                     oddNumbers.Add(Convert.ToInt32(code.Substring(i, 1)));
                 }
@@ -66,7 +103,7 @@ namespace Bank
                 {
                     int x = oddNumbers[i] * 2;
 
-                    if(x > 9)
+                    if (x > 9)
                     {
                         x = x - 9;
                     }
@@ -78,8 +115,6 @@ namespace Bank
                 {
                     result += (oddNumbers[i] + pairNumbers[i]);
                 }
-
-                tempControlNumber = result % 10;
 
                 if (result % 10 == 0)
                 {
@@ -123,8 +158,6 @@ namespace Bank
                     }
                 }
 
-                tempControlNumber = result % 10;
-
                 if (result % 10 == 0)
                 {
                     return true;
@@ -133,37 +166,6 @@ namespace Bank
             #endregion
 
             return false;
-        }
-
-        public static string GenerateNextCreditCardNumber(string cardNumber)
-        {
-            Random number = new Random();
-            string code = cardNumber.Replace(" ", string.Empty);
-            string strfirstPart = code.Substring(0, 4);
-            int intFirstPart = Convert.ToInt32(strfirstPart);
-            string secondPart = null;
-            int sum = (intFirstPart / 1000) + ((intFirstPart % 1000) / 100) + ((intFirstPart % 100) / 10) + intFirstPart % 10;
-
-            for (int i = 0; i < code.Length - (strfirstPart.Length + 1); i++)
-            {
-                int currentRandom = number.Next(0, 9);
-                secondPart += currentRandom;
-                sum += currentRandom;
-            }
-
-            int controlNumber = 0;
-            int part = sum % 10;
-
-            string alphaCode = strfirstPart + secondPart + controlNumber;
-            IsCreditCardNumberValid(alphaCode);
-
-            if (tempControlNumber != 0)
-            {
-                controlNumber = 10 - tempControlNumber;
-            }
-
-            string newCode = strfirstPart + secondPart + controlNumber;
-            return newCode;
         }
     }
 }

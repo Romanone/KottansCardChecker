@@ -44,6 +44,11 @@
             this.gbNextNumber = new System.Windows.Forms.GroupBox();
             this.btnGenerator = new System.Windows.Forms.Button();
             this.tbGenerator = new System.Windows.Forms.TextBox();
+            this.label3 = new System.Windows.Forms.Label();
+            this.lblGetCreditCardVendor = new System.Windows.Forms.Label();
+            this.label5 = new System.Windows.Forms.Label();
+            this.lblIsCreditCardNumberValid = new System.Windows.Forms.Label();
+            this.btnDel = new System.Windows.Forms.Button();
             this.gbInformation.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pbCheck)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbVendor)).BeginInit();
@@ -177,6 +182,7 @@
             // 
             // gbNextNumber
             // 
+            this.gbNextNumber.Controls.Add(this.btnDel);
             this.gbNextNumber.Controls.Add(this.btnGenerator);
             this.gbNextNumber.Controls.Add(this.tbGenerator);
             this.gbNextNumber.Font = new System.Drawing.Font("Candara", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
@@ -205,11 +211,65 @@
             this.tbGenerator.Size = new System.Drawing.Size(265, 27);
             this.tbGenerator.TabIndex = 1;
             // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Font = new System.Drawing.Font("Candara", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.label3.Location = new System.Drawing.Point(12, 209);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(142, 19);
+            this.label3.TabIndex = 7;
+            this.label3.Text = "Credit Card Vendor:";
+            // 
+            // lblGetCreditCardVendor
+            // 
+            this.lblGetCreditCardVendor.AutoSize = true;
+            this.lblGetCreditCardVendor.Font = new System.Drawing.Font("Candara", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.lblGetCreditCardVendor.Location = new System.Drawing.Point(248, 209);
+            this.lblGetCreditCardVendor.Name = "lblGetCreditCardVendor";
+            this.lblGetCreditCardVendor.Size = new System.Drawing.Size(35, 19);
+            this.lblGetCreditCardVendor.TabIndex = 8;
+            this.lblGetCreditCardVendor.Text = "null";
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Font = new System.Drawing.Font("Candara", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.label5.Location = new System.Drawing.Point(12, 228);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(184, 19);
+            this.label5.TabIndex = 9;
+            this.label5.Text = "Credit Card Number Valid:";
+            // 
+            // lblIsCreditCardNumberValid
+            // 
+            this.lblIsCreditCardNumberValid.AutoSize = true;
+            this.lblIsCreditCardNumberValid.Font = new System.Drawing.Font("Candara", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.lblIsCreditCardNumberValid.Location = new System.Drawing.Point(248, 228);
+            this.lblIsCreditCardNumberValid.Name = "lblIsCreditCardNumberValid";
+            this.lblIsCreditCardNumberValid.Size = new System.Drawing.Size(35, 19);
+            this.lblIsCreditCardNumberValid.TabIndex = 10;
+            this.lblIsCreditCardNumberValid.Text = "null";
+            // 
+            // btnDel
+            // 
+            this.btnDel.Location = new System.Drawing.Point(240, 25);
+            this.btnDel.Name = "btnDel";
+            this.btnDel.Size = new System.Drawing.Size(30, 28);
+            this.btnDel.TabIndex = 11;
+            this.btnDel.Text = "X";
+            this.btnDel.UseVisualStyleBackColor = true;
+            this.btnDel.Click += new System.EventHandler(this.btnDel_Click);
+            // 
             // frmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(499, 218);
+            this.ClientSize = new System.Drawing.Size(499, 261);
+            this.Controls.Add(this.lblIsCreditCardNumberValid);
+            this.Controls.Add(this.label5);
+            this.Controls.Add(this.lblGetCreditCardVendor);
+            this.Controls.Add(this.label3);
             this.Controls.Add(this.gbNextNumber);
             this.Controls.Add(this.gbCardNumber);
             this.Controls.Add(this.gbInformation);
@@ -228,6 +288,7 @@
             this.gbNextNumber.ResumeLayout(false);
             this.gbNextNumber.PerformLayout();
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -248,6 +309,11 @@
         private System.Windows.Forms.PictureBox pbCheck;
         private System.Windows.Forms.Button btnClear;
         private System.Windows.Forms.Button btnAbout;
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.Label lblGetCreditCardVendor;
+        private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.Label lblIsCreditCardNumberValid;
+        private System.Windows.Forms.Button btnDel;
     }
 }
 

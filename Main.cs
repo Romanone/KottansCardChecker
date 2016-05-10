@@ -55,10 +55,14 @@ namespace Bank
 
         private bool ValidationCheck(TextBox tb)
         {
+            lblIsCreditCardNumberValid.Text = BankOperation.IsCreditCardNumberValid(tb.Text).ToString(); // for test
+            lblGetCreditCardVendor.Text = BankOperation.GetCreditCardVendor(tb.Text);                    // for test
+
+
             if (BankOperation.IsCreditCardNumberValid(tb.Text))
             {
                 lblVendor.Text = BankOperation.GetCreditCardVendor(tb.Text);
-                if(lblVendor.Text != "Unknown")
+                if (lblVendor.Text != "Unknown")
                 {
                     lblValid.Text = "Номер валідний";
                     object check = Properties.Resources.ResourceManager.GetObject("true");
@@ -132,7 +136,7 @@ namespace Bank
 
         private void btnAbout_Click(object sender, EventArgs e)
         {
-            MessageBox.Show("V1.1\n08.05.2016\nRoman Kovalchuk\nroman@kovalchuk.eu", "Тестове завдання для kottans.org");
+            MessageBox.Show("V1.2\n10.05.2016\nRoman Kovalchuk\nroman@kovalchuk.eu", "Тестове завдання для kottans.org");
         }
 
         private void btnGenerator_Click(object sender, EventArgs e)
@@ -144,18 +148,17 @@ namespace Bank
 
                 if (ValidationCheck(tbInput))
                 {
-                    tbGenerator.Text = BankOperation.GenerateNextCreditCardNumber(tbInput.Text);
+                    if (String.IsNullOrEmpty(tbGenerator.Text))
+                        tbGenerator.Text = tbInput.Text;
+                    tbGenerator.Text = BankOperation.GenerateNextCreditCardNumber(tbGenerator.Text);
+                    ValidationCheck(tbGenerator);
                 }
                 else
                 {
                     MessageBox.Show("Новий номер можна згенерувати тільки на основі існуючого валідного.");
                 }
-
             }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message);
-            }
+            catch { }
         }
 
         private void tbInput_KeyPress(object sender, KeyPressEventArgs e)
@@ -165,5 +168,10 @@ namespace Bank
         }
 
         #endregion
+
+        private void btnDel_Click(object sender, EventArgs e)
+        {
+            tbGenerator.Text = "";
+        }
     }
 }
